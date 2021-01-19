@@ -209,6 +209,3 @@ class TH_weights( Module ):
 
         return True
 
-tHq_reweigther = lambda : TH_weights('thq')
-tHW_reweigther = lambda : TH_weights('thw')
-ttH_reweigther = lambda : TH_weights('tth')

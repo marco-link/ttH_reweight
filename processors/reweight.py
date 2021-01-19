@@ -13,6 +13,7 @@ from PhysicsTools.NanoAODTools.modules import *
 
 parser = argparse.ArgumentParser()
 
+parser.add_argument('--process')
 parser.add_argument('--input', dest='inputFiles', action='append', default=[])
 parser.add_argument('--year', dest='year', action='store', type=int)
 parser.add_argument('--maxEntries', '-N', type=int, default=None)
@@ -84,7 +85,7 @@ cut = ' || '.join(triggers[args.year])
 
 
 analyzerChain = [
-    TH_weights('thq'),
+    TH_weights(args.process),
 ]
 
 
