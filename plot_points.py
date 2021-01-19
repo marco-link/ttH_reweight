@@ -91,36 +91,19 @@ def proposed_grid():
 
 
 def reweighting_points():
-    # generate scan
     cosa = numpy.array([-0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, -0.0001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
-    sina= numpy.sin(numpy.arccos(cosa))
-    ktcosa = numpy.array([-2. ,-1.7, -1.5,-1.4,-1.2, -1.,-0.8 , -0.5, -0.25, -0.15, 0., 0.15, 0.25 ,  0.5, 0.8, 1. ,1.2,1.4  ,1.5,1.7,  2.])
+    q = numpy.linspace(-3,3,10).transpose()
 
-    cosacosa, ktcosaktcosa = numpy.meshgrid( cosa, ktcosa)
-    ktkt = numpy.divide( ktcosaktcosa, cosacosa)
-    ktsinakitsina = numpy.multiply( ktkt, numpy.sin(numpy.arccos(cosacosa)))
-
-    ktcosa = ktcosaktcosa.flatten()
-    ktsina = ktsinakitsina.flatten()
-    ktkt   = ktkt.flatten()
-
-    # the grid will be (ktcosa, ktsina)
-    mask = ktsina<2.1
-    ktcosa = ktcosa[mask]
-    ktsina = ktsina[mask]
-
-    ktkt = ktkt[mask]
-    cosa = ktcosa/ktkt
-
-    # filter nans
-    mask = numpy.logical_not( numpy.isnan( cosa ))
-    ktkt = ktkt[mask]
-    cosa = cosa[mask]
+    cosacosa,qq = numpy.meshgrid( cosa, q )
 
 
-    alpha = numpy.arccos(cosa)
+    qq = qq.flatten()
+    cosacosa = cosacosa.flatten()
 
-    return ktkt * cosa, 2/3 * numpy.sin(alpha)
+
+    alpha = numpy.arccos(cosacosa)
+
+    return qq * cosacosa, 2/3 * qq * numpy.sin(alpha)
 
 
 
@@ -144,8 +127,8 @@ p2 = fig.add_subplot(122)
 for p in [p1, p2]:
     for x, y in zip(*samplepoints(alpha_sample)):
         p.plot([-10 * x, 10 * x], [-10 * y, 10 * y], 'r-')
-        p.plot([x], [y], 'r.')
-    p.plot([-100], [0], 'r.', label='orignal sample')
+        p.plot([x], [y], 'ro')
+    p.plot([-100], [0], 'ro', label='orignal sample')
 
     p.set_xlim(-3, 3)
     p.set_ylim(-3, 3)
@@ -159,7 +142,7 @@ for p in [p1, p2]:
 
 
 
-p1.plot(*reweighting_points(), 'b.', label='reweighting')
+p1.plot(*reweighting_points(), 'b.', label='reweighting ({} points)'.format(len(reweighting_points()[0])))
 
 
 
