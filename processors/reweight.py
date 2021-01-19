@@ -40,7 +40,12 @@ triggers = {
                     '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL == 1)',
                     '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ == 1)',
                     '(HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL == 1)',
-                    '(HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ == 1)'
+                    '(HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ == 1)',
+
+
+                    '(HLT_PFHT450_SixJet40_BTagCSV_p056 == 1)',
+                    '(HLT_PFHT400_SixJet30_DoubleBTagCSV_p056 == 1)',
+                    '(HLT_PFJet450 == 1)',
                    ],
 
             2017: [
@@ -58,12 +63,18 @@ triggers = {
                     '(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
                     '(HLT_IsoMu24_eta2p1 == 1)',
                     '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ == 1)',
-                    '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 == 1)'
+                    '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 == 1)',
+
+
+                    '(HLT_PFHT430_SixPFJet40_PFBTagCSV_1p5 == 1)',
+                    '(HLT_PFHT380_SixPFJet32_DoublePFBTagCSV_2p2 == 1)',
+                    '(HLT_PFHT300PT30_QuadPFJet_75_60_45_40_TriplePFBTagCSV_3p0 == 1)',
+                    '(HLT_PFHT1050 == 1)',
                    ],
 
             2018: [
                     '(HLT_IsoMu24 == 1)',
-                    '(HLT_Ele32_WPTight_Gsf_v == 1)',
+                    '(HLT_Ele32_WPTight_Gsf == 1)',
                     '(HLT_Ele28_eta2p1_WPTight_Gsf_HT150 == 1)',
 
 
@@ -75,7 +86,13 @@ triggers = {
                     '(HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
                     '(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
                     '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 == 1)',
-                    '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 == 1)'
+                    '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 == 1)',
+
+
+                    '(HLT_PFHT450_SixPFJet36_PFBTagDeepCSV_1p59 == 1)',
+                    '(HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94 == 1)',
+                    '(HLT_PFHT330PT30_QuadPFJet_75_60_45_40_TriplePFBTagDeepCSV_4p5 == 1)',
+                    '(HLT_PFHT1050 == 1)',
                    ],
           }
 

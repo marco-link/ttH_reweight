@@ -92,7 +92,14 @@ def proposed_grid():
 
 def reweighting_points():
     cosa = numpy.array([-0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, -0.0001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
-    q = numpy.linspace(-3,3,10).transpose()
+    q = numpy.linspace(-3,3,10)
+
+    q_new = numpy.array([])
+    #q_new = numpy.linspace(-1.5,1.5,20)
+    #q_new = q_new[numpy.abs(q_new) >0.25]
+    #q_new = q_new[abs((numpy.abs(q_new)-1.02631579)) >1e-8]
+
+    q = numpy.concatenate((q, q_new)).transpose()
 
     cosacosa,qq = numpy.meshgrid( cosa, q )
 

@@ -13,3 +13,7 @@ __init__.py
 LSFJOB*/
 slurm-*.out
 happyTreeFriend.*
+
+
+*.root
+*.log
