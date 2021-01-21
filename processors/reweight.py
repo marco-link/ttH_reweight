@@ -34,13 +34,13 @@ triggers = {
 
                     '(HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
                     '(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL == 1)',
-                    '(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
+                    #'(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
                     '(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL == 1)',
-                    '(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
+                    #'(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
                     '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL == 1)',
-                    '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ == 1)',
+                    #'(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ == 1)',
                     '(HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL == 1)',
-                    '(HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ == 1)',
+                    #'(HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ == 1)',
 
 
                     '(HLT_PFHT450_SixJet40_BTagCSV_p056 == 1)',
@@ -56,12 +56,12 @@ triggers = {
 
                     '(HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL == 1)',
                     '(HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
-                    '(HLT_Ele32_WPTight_Gsf == 1)',
+                    #'(HLT_Ele32_WPTight_Gsf == 1)',
                     '(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL == 1)',
                     '(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
                     '(HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
                     '(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
-                    '(HLT_IsoMu24_eta2p1 == 1)',
+                    #'(HLT_IsoMu24_eta2p1 == 1)',
                     '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ == 1)',
                     '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 == 1)',
 
@@ -85,7 +85,7 @@ triggers = {
                     '(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
                     '(HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
                     '(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ == 1)',
-                    '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 == 1)',
+                    #'(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 == 1)',
                     '(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 == 1)',
 
 
