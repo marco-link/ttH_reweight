@@ -94,74 +94,139 @@ def reweighting_points():
     cosa = numpy.array([-0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, -0.0001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
     q = numpy.linspace(-3,3,10)
 
-    q_new = numpy.array([])
-    #q_new = numpy.linspace(-1.5,1.5,20)
-    #q_new = q_new[numpy.abs(q_new) >0.25]
-    #q_new = q_new[abs((numpy.abs(q_new)-1.02631579)) >1e-8]
-
-    q = numpy.concatenate((q, q_new)).transpose()
-
-    cosacosa,qq = numpy.meshgrid( cosa, q )
-
+    cosacosa, qq = numpy.meshgrid(cosa, q )
 
     qq = qq.flatten()
     cosacosa = cosacosa.flatten()
-
-
     alpha = numpy.arccos(cosacosa)
 
-    return qq * cosacosa, 2/3 * qq * numpy.sin(alpha)
+    return qq * cosacosa, 2./3 * qq * numpy.sin(alpha)
+
+
+
+points = pandas.DataFrame(columns=('name', 'kt', 'ktilde', 'kv'))
+
+def addPoint(name, kt, ktilde, kv):
+    points.loc[len(points.index)] = [name, kt, ktilde, kv]
+
+
+# model: A*kt*(kt-kv)+C*kv*(kv-kt)+(D+A+C)*kt*kv + B*kttilde^2
+
+addPoint('weight_CPfloat_1',      kt=0, ktilde=0, kv=1) # term C
+addPoint('weight_CPfloat_2',      kt=0, ktilde=1, kv=0) # term B
+addPoint('weight_CPfloat_3',      kt=0, ktilde=1, kv=1)
+addPoint('weight_CPfloat_4',      kt=1, ktilde=0, kv=0) # term A
+addPoint('weight_CPfloat_5',      kt=1, ktilde=0, kv=1) # SM term D+A+C
+addPoint('weight_CPfloat_6',      kt=1, ktilde=1, kv=0)
+addPoint('weight_CPfloat_7',      kt=1, ktilde=1, kv=1)
+
+
+# add fallback grid
+i = 0
+
+for x, y in zip(*reweighting_points()):
+    i = i + 1
+    addPoint('weight_CPgrid_{}'.format(i), kt=x, ktilde=y, kv=0.5)
+    i = i + 1
+    addPoint('weight_CPgrid_{}'.format(i), kt=x, ktilde=y, kv=1)
+    i = i + 1
+    addPoint('weight_CPgrid_{}'.format(i), kt=x, ktilde=y, kv=1.5)
+
+
+points.to_csv('data/mc_rw/points.csv', index=False)
+
+
+
+# plot points
+
+fig = matplotlib.pyplot.figure(figsize=(6,6))
+
+p1 = fig.add_subplot(111, projection='3d')
+
+
+alldata = pandas.read_csv('data/mc_rw/points.csv', sep=',', header=0, converters={0:str}, comment='#', decimal='.')
+
+
+mask = ['float' in x for x in alldata['name']]
+
+data = alldata[mask]
+p1.scatter(data['kt'], data['ktilde'], zs=data['kv'], label = 'floating')
+
+
+
+mask = ['grid' in x for x in alldata['name']]
+
+data = alldata[mask]
+p1.scatter(data['kt'], data['ktilde'], zs=data['kv'], label = 'grid', s=5)
 
 
 
 
 
-
-
-
-
-# plotting stuff
-
-fig = matplotlib.pyplot.figure(figsize=(12,6))
-
-p1 = fig.add_subplot(121)
-p2 = fig.add_subplot(122)
-
-
-
-
-
-for p in [p1, p2]:
-    for x, y in zip(*samplepoints(alpha_sample)):
-        p.plot([-10 * x, 10 * x], [-10 * y, 10 * y], 'r-')
-        p.plot([x], [y], 'ro')
-    p.plot([-100], [0], 'ro', label='orignal sample')
-
-    p.set_xlim(-3, 3)
-    p.set_ylim(-3, 3)
-
-
-    p.set_xlabel('kt')
-    p.set_ylabel('kt~')
-
-
-
-
-
-
-p1.plot(*reweighting_points(), 'b.', label='reweighting ({} points)'.format(len(reweighting_points()[0])))
-
-
-
-
-#p1.plot(*proposed_circular(), 'go', label = 'proposal')
-p2.plot(*proposed_grid(), 'b.', label = 'proposal ({} points)'.format(len(proposed_grid()[0])))
+p1.set_xlabel(r'$\kappa_t$')
+p1.set_ylabel(r'$\tilde{\kappa_t}$')
+p1.set_zlabel(r'$\kappa_V$')
 
 p1.legend(loc=0)
-p2.legend(loc=0)
 
 
 fig.tight_layout()
 fig.savefig('points.pdf', dpi=300, transparent=False)
-matplotlib.pyplot.show()
 matplotlib.pyplot.close()
+
+
+
+
+
+
+
+
+
+
+
+
+## plotting stuff
+
+#fig = matplotlib.pyplot.figure(figsize=(12,6))
+
+#p1 = fig.add_subplot(121)
+#p2 = fig.add_subplot(122)
+
+
+
+
+
+#for p in [p1, p2]:
+    #for x, y in zip(*samplepoints(alpha_sample)):
+        #p.plot([-10 * x, 10 * x], [-10 * y, 10 * y], 'r-')
+        #p.plot([x], [y], 'ro')
+    #p.plot([-100], [0], 'ro', label='orignal sample')
+
+    #p.set_xlim(-3, 3)
+    #p.set_ylim(-3, 3)
+
+
+    #p.set_xlabel('kt')
+    #p.set_ylabel('kt~')
+
+
+
+
+
+
+#p1.plot(*reweighting_points(), 'b.', label='reweighting ({} points)'.format(len(reweighting_points()[0])))
+
+
+
+
+##p1.plot(*proposed_circular(), 'go', label = 'proposal')
+#p2.plot(*proposed_grid(), 'b.', label = 'proposal ({} points)'.format(len(proposed_grid()[0])))
+
+#p1.legend(loc=0)
+#p2.legend(loc=0)
+
+
+#fig.tight_layout()
+#fig.savefig('points.pdf', dpi=300, transparent=False)
+#matplotlib.pyplot.show()
+#matplotlib.pyplot.close()

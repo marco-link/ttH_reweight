@@ -5,4 +5,4 @@ keep run
 keep luminosityBlock
 keep event
 
-keep weight_*.dat
+keep weight_*

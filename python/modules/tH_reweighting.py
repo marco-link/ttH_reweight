@@ -3,10 +3,10 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collect
 #from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import writeOutput
 import os, sys
 import math
-import numpy as np 
 import imp
 import tempfile, shutil
 import numpy
+import pandas
 
 def invert_momenta(p):
     #fortran/C-python do not order table in the same order
@@ -59,45 +59,25 @@ class TH_weights( Module ):
         path=os.environ['CMSSW_BASE'] + '/src/PhysicsTools/NanoAODTools/data/mc_rw/%s/'%process
 
 
-        # reweighting points (first should be reference) 
-        self.param_cards=[path + '/param_card_itc.dat', path+'/param_card_sm.dat']
-
-        # generate scan
-        cosa = np.array([-0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, -0.0001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
-        q = np.linspace(-3,3,10)
-
-        q_new = numpy.array([])
-        #q_new = np.linspace(-1.5,1.5,20)
-        #q_new = q_new[np.abs(q) >0.25]
-        #q_new = q_new[abs((np.abs(q)-1.02631579)) >1e-8]
-
-        q = np.concatenate((q, q_new)).transpose()
-
-
-        cosacosa,qq = np.meshgrid( cosa, q )
-
-
-        # for plotting
-        #kt = cosa
-        #sina= np.sin(np.arccos(cosa))
-        # kt_tilde = 2./3*sina
-        #kt_tildekt_tilde,qq = np.meshgrid( kt_tilde, q)
-        #cosacosa,qq=np.meshgrid(cosa,q)
-
-        # ktkt=np.multiply(ktkt,qq)
-        # kt_tildekt_tilde = np.multiply(kt_tildekt_tilde,qq)
-
-        # ktkt=ktkt.flatten()
-        # kt_tildekt_tilde=kt_tildekt_tilde.flatten()
-        qq = qq.flatten()
-        cosacosa = cosacosa.flatten()
-
+        # reweighting points (first should be reference)
+        self.param_cards=[path + '/param_card_itc.dat']
 
 
         template=open("%s/param_card_sm_template.dat"%path).read()
-        for cosa, q in zip(cosacosa, qq):
-            outn="param_card_cosa_%s_q_%s.dat"%(numToString(cosa), numToString(q))
-            out=template.format(khtt=q,katt=2.*q/3,cosa=cosa,kSM=1/cosa)
+
+
+        points = pandas.read_csv('data/mc_rw/points.csv', sep=',', header=0, converters={0:str}, comment='#', decimal='.')
+
+        # calculate q and cosa (note that factor 2/3 was already applied when calculating kt and ktilde)
+        points['q'] = numpy.sqrt(points['kt']*points['kt'] + points['ktilde']*points['ktilde'])
+        alpha = numpy.arctan2(points['ktilde'], points['kt'])
+        points['cosa'] = numpy.cos(alpha)
+
+        for index, point in points.iterrows():
+            print(point)
+
+            outn="param_card_%s.dat"%(point['name'])
+            out=template.format(khtt=point['q'],katt=point['q'],cosa=point['cosa'],kSM=point['kv'])
             outf=open('%s/%s'%(self.tmpdir,outn),'w')
             outf.write(out)
             outf.close()
@@ -130,7 +110,7 @@ class TH_weights( Module ):
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         self.wrappedOutputTree = wrappedOutputTree
         for card in self.param_cards:
-            self.wrappedOutputTree.branch('weight_%s'%(card.split('/')[-1].replace('param_card_','')),'F')
+            self.wrappedOutputTree.branch('%s'%(card.split('/')[-1].replace('param_card_','').replace('.dat', '')),'F')
 
     def endJob(self):
         for dr in self.tmpdirs:
@@ -213,7 +193,7 @@ class TH_weights( Module ):
             weights.append( mod.smatrixhel( final_pdgs, final_parts_i, event.LHE_AlphaS, scale2, nhel) ) 
 
         for i, card in enumerate(self.param_cards):
-            self.wrappedOutputTree.fillBranch('weight_%s'%(card.split('/')[-1].replace('param_card_','')), weights[i]/weights[0])
+            self.wrappedOutputTree.fillBranch('%s'%(card.split('/')[-1].replace('param_card_','').replace('.dat', '')), weights[i]/weights[0])
 
 
         return True
