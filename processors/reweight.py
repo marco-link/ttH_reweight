@@ -1,11 +1,9 @@
 import os
 import sys
-import math
 import argparse
-import random
-import ROOT
-import numpy as np
+#import ROOT
 
+from PhysicsTools.NanoAODTools.postprocessing.framework.crabhelper import inputFiles,runsAndLumis
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection, Object
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
@@ -14,14 +12,23 @@ from PhysicsTools.NanoAODTools.modules import *
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--process')
-parser.add_argument('--input', dest='inputFiles', action='append', default=[])
+parser.add_argument("-i", "--input", dest="inputfile", type=str, default=None, help="path to input file")
 parser.add_argument('--year', dest='year', action='store', type=int)
 parser.add_argument('--maxEntries', '-N', type=int, default=None)
-parser.add_argument('output', nargs=1)
+parser.add_argument('--crab', action='store_true')
+parser.add_argument('--output', type=str, default='weights.root')
 
 
 args = parser.parse_args()
 print(args)
+
+the_inputfiles = None
+if args.crab:
+    the_inputfiles = inputFiles()
+else:
+    the_inputfiles = [args.inputfile]
+
+print('Inputfiles: ', the_inputfiles)
 
 
 
@@ -107,15 +114,20 @@ analyzerChain = [
 
 
 
+
+
+
 runner = PostProcessor(
-    args.output[0],
-    args.inputFiles,
+    '.',
+    the_inputfiles,
     postfix='_weights',
     cut=cut,
     modules=analyzerChain,
     friend=False,
     outputbranchsel='processors/keep.txt',
     maxEntries=args.maxEntries,
+    fwkJobReport = args.crab,
+    haddFileName=args.output
 )
 
 

@@ -119,6 +119,8 @@ addPoint('weight_CPfloat_4',      kt=1, ktilde=0, kv=0) # term A
 addPoint('weight_CPfloat_5',      kt=1, ktilde=0, kv=1) # SM term D+A+C
 addPoint('weight_CPfloat_6',      kt=1, ktilde=1, kv=0)
 addPoint('weight_CPfloat_7',      kt=1, ktilde=1, kv=1)
+addPoint('weight_CPfloat_8',      kt=-1, ktilde=0, kv=1)
+addPoint('weight_CPfloat_9',      kt=-1, ktilde=0, kv=0)
 
 
 # add fallback grid

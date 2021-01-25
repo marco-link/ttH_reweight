@@ -6,6 +6,8 @@ weight_CPfloat_4,1,0,0
 weight_CPfloat_5,1,0,1
 weight_CPfloat_6,1,1,0
 weight_CPfloat_7,1,1,1
+weight_CPfloat_8,-1,0,1
+weight_CPfloat_9,-1,0,0
 weight_CPgrid_1,2.7,-0.8717797887081348,0.5
 weight_CPgrid_2,2.7,-0.8717797887081348,1
 weight_CPgrid_3,2.7,-0.8717797887081348,1.5

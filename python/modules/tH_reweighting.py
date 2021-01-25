@@ -32,12 +32,12 @@ The boost perform correspond to the boost required to set pboost at
     #beta = pz/E
     gamma = E / math.sqrt(E**2-pz**2)
     gammabeta = pz  / math.sqrt(E**2-pz**2)
-        
+
     out =  [gamma * part[0] - gammabeta * part[3],
             part[1],
             part[2],
             gamma * part[3] - gammabeta * part[0]]
-    
+
     if abs(out[3]) < 1e-6 * out[0]:
         out[3] = 0
     return out
@@ -45,28 +45,25 @@ The boost perform correspond to the boost required to set pboost at
 
 def numToString(num):
     return ("%4.2f"%num).replace('.','p').replace('-','m')
-        
+
+
 class TH_weights( Module ):
     def __init__(self, process):
-
         self.mods=[]
         self.tmpdirs=[]
-        if 'psi.ch' in os.environ['HOSTNAME']:
-            self.tmpdir='/scratch/'
-        else:
-            self.tmpdir='/tmp/'
+        self.tmpdir='/tmp/'
 
-        path=os.environ['CMSSW_BASE'] + '/src/PhysicsTools/NanoAODTools/data/mc_rw/%s/'%process
+        path=os.environ['CMSSW_BASE'] + '/src/PhysicsTools/NanoAODTools/data/mc_rw/{}/'.format(process)
 
 
         # reweighting points (first should be reference)
         self.param_cards=[path + '/param_card_itc.dat']
 
 
-        template=open("%s/param_card_sm_template.dat"%path).read()
+        template=open("{}/param_card_sm_template.dat".format(path)).read()
 
 
-        points = pandas.read_csv('data/mc_rw/points.csv', sep=',', header=0, converters={0:str}, comment='#', decimal='.')
+        points = pandas.read_csv(os.environ['CMSSW_BASE'] + '/src/PhysicsTools/NanoAODTools/data/mc_rw/points.csv', sep=',', header=0, converters={0:str}, comment='#', decimal='.')
 
         # calculate q and cosa (note that factor 2/3 was already applied when calculating kt and ktilde)
         points['q'] = numpy.sqrt(points['kt']*points['kt'] + points['ktilde']*points['ktilde'])
@@ -74,9 +71,7 @@ class TH_weights( Module ):
         points['cosa'] = numpy.cos(alpha)
 
         for index, point in points.iterrows():
-            print(point)
-
-            outn="param_card_%s.dat"%(point['name'])
+            outn="param_card_{}.dat".format(point['name'])
             out=template.format(khtt=point['q'],katt=point['q'],cosa=point['cosa'],kSM=point['kv'])
             outf=open('%s/%s'%(self.tmpdir,outn),'w')
             outf.write(out)
@@ -93,7 +88,7 @@ class TH_weights( Module ):
             print 'initializing', card
             self.mods[-1].initialise(card)
         print self.mods
-        
+
         self.pdgOrderSorted = [SortPDGs(x.tolist()) for x in self.mods[-1].get_pdg_order()]
         self.pdgOrder = [x.tolist() for x in self.mods[-1].get_pdg_order()]
         self.all_prefix = [''.join(j).strip().lower() for j in self.mods[-1].get_prefix()]
@@ -105,7 +100,7 @@ class TH_weights( Module ):
                 for i, onehel in enumerate(zip(*nhel)):
                     self.hel_dict[prefix][tuple(onehel)] = i + 1
 
-        
+
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         self.wrappedOutputTree = wrappedOutputTree
@@ -114,7 +109,8 @@ class TH_weights( Module ):
 
     def endJob(self):
         for dr in self.tmpdirs:
-            shutil.rmtree(dr)
+            shutil.rmtree(dr, ignore_errors=False)
+
 
     def analyze(self, event):
 
@@ -122,7 +118,7 @@ class TH_weights( Module ):
         pdgs = [x.pdgId for x in lheParts]
         hel  = [x.spin  for x in lheParts]
 
-        
+
 
         p = [ ]
         for part in lheParts:
@@ -136,7 +132,7 @@ class TH_weights( Module ):
         try:
             idx = self.pdgOrderSorted.index(evt_sorted_pdgs)
         except ValueError:
-            print '>> Event with PDGs %s does not match any known process' % pdgs
+            print('>> Event with PDGs {} does not match any known process'.format(pdgs))
             return res
 
         target_pdgs=self.pdgOrder[idx]
@@ -172,11 +168,11 @@ class TH_weights( Module ):
         if t_final_hels in hel_dict:
             nhel = hel_dict[t_final_hels]
         else:
-            print "Available helicities are"
-            print hel_dict
-            print "tried", t_final_hels
+            print("Available helicities are")
+            print(hel_dict)
+            print("tried", t_final_hels)
             raise RuntimeError("Helicity configuration not found")
-        
+
         com_final_parts = []
 
 
@@ -184,7 +180,7 @@ class TH_weights( Module ):
 
         for part in final_parts:
             com_final_parts.append(zboost(part, pboost))
-            
+
 
         final_parts_i = invert_momenta(com_final_parts)
         scale2=0
@@ -197,4 +193,3 @@ class TH_weights( Module ):
 
 
         return True
-
