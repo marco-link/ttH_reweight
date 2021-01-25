@@ -51,7 +51,7 @@ for year in years:
     config.JobType.pluginName = 'Analysis'
     config.JobType.psetName = 'PSet.py'
     config.JobType.scriptExe = 'crab_script.sh'
-    config.JobType.inputFiles = ['../processors', '../ident_card.dat']
+    config.JobType.inputFiles = ['../processors', '../ident_card.dat', '../haddnano.py']
     config.JobType.sendPythonFolder = True
     config.JobType.maxMemoryMB = 2500
     #config.JobType.numCores = 1
