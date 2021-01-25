@@ -3,7 +3,7 @@ import sys
 import argparse
 #import ROOT
 
-from PhysicsTools.NanoAODTools.postprocessing.framework.crabhelper import inputFiles,runsAndLumis
+from PhysicsTools.NanoAODTools.postprocessing.framework.crabhelper import inputFiles
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection, Object
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
@@ -104,7 +104,7 @@ triggers = {
           }
 
 
-cut = ' || '.join(triggers[args.year])
+triggercuts = ' || '.join(triggers[args.year])
 
 
 
@@ -121,11 +121,12 @@ runner = PostProcessor(
     '.',
     the_inputfiles,
     postfix='_weights',
-    cut=cut,
+    cut=triggercuts,
     modules=analyzerChain,
     friend=False,
-    outputbranchsel='processors/keep.txt',
+    outputbranchsel='./keep.txt',
     maxEntries=args.maxEntries,
+    provenance = args.crab,
     fwkJobReport = args.crab,
     haddFileName=args.output
 )

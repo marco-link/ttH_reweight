@@ -24,17 +24,17 @@ else
     echo Found Proxy in: $X509_USER_PROXY
 
     for i in "$@"; do
-	case $i in
-	    process=*)
-	    opt_proc="${i#*=}"
-	    ;;
-	    year=*)
-	    opt_year="${i#*=}"
-	    ;;
-	esac
+    case $i in
+        process=*)
+        opt_proc="${i#*=}"
+        ;;
+        year=*)
+        opt_year="${i#*=}"
+        ;;
+    esac
     done
     echo "process: ${opt_proc} year: ${opt_year}"
-    echo "---> python processors/reweight.py"
-    python processors/reweight.py --crab --process "${opt_proc}"  --year "${opt_year}"
+    echo "---> python reweight.py"
+    python reweight.py --crab --process "${opt_proc}"  --year "${opt_year}"
     echo "DONE with crab_script.sh"
 fi
