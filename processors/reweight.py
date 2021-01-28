@@ -23,10 +23,13 @@ args = parser.parse_args()
 print(args)
 
 the_inputfiles = None
+keep = None
 if args.crab:
     the_inputfiles = inputFiles()
+    keep = './keep.txt'
 else:
     the_inputfiles = [args.inputfile]
+    keep = 'processors/keep.txt'
 
 print('Inputfiles: ', the_inputfiles)
 
@@ -124,7 +127,7 @@ runner = PostProcessor(
     cut=triggercuts,
     modules=analyzerChain,
     friend=False,
-    outputbranchsel='./keep.txt',
+    outputbranchsel=keep,
     maxEntries=args.maxEntries,
     provenance = args.crab,
     fwkJobReport = args.crab,
