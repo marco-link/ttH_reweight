@@ -66,7 +66,7 @@ for year in years:
     config.Data.splitting = 'FileBased'
     config.Data.unitsPerJob = 1
     config.Data.publication = False
-    config.Data.outLFNDirBase = '/store/user/mlink/ttH_reweight_{}/v1/'.format(year)
+    config.Data.outLFNDirBase = '/store/user/mlink/ttH_reweight_{}/v2/'.format(year)
     ##config.Data.totalUnits = 2
     #config.Data.publishDbsUrl = 'phys03'
     #config.Data.outputDatasetTag = 'Analysis_NanoAOD'

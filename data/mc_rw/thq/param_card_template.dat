@@ -18,10 +18,10 @@
 ###################################
 BLOCK FRBLOCK # 
       1 1.000000e+03 # lambda
-      2 {cosa} # cosa
-      3 {kSM} # ksm
-      4 {khtt} # khtt
-      5 {katt} # katt
+      2 {cosa:.6e} # cosa
+      3 {kSM:.6e} # ksm
+      4 {khtt:.6e} # khtt
+      5 {katt:.6e} # katt
       6 1.000000e+00 # khbb
       7 1.000000e+00 # kabb
       8 1.000000e+00 # khll

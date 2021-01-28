@@ -57,22 +57,18 @@ class TH_weights( Module ):
 
 
         # reweighting points (first should be reference)
-        self.param_cards=[path + '/param_card_itc.dat']
+        self.param_cards=[path + '/param_card_itc.dat', path + '/param_card_sm.dat']
 
 
-        template=open("{}/param_card_sm_template.dat".format(path)).read()
-
+        template=open("{}/param_card_template.dat".format(path)).read()
 
         points = pandas.read_csv(os.environ['CMSSW_BASE'] + '/src/PhysicsTools/NanoAODTools/data/mc_rw/points.csv', sep=',', header=0, converters={0:str}, comment='#', decimal='.')
+        sina_eq_cosa = numpy.cos(numpy.pi/4)
 
-        # calculate q and cosa (note that factor 2/3 was already applied when calculating kt and ktilde)
-        points['q'] = numpy.sqrt(points['kt']*points['kt'] + points['ktilde']*points['ktilde'])
-        alpha = numpy.arctan2(points['ktilde'], points['kt'])
-        points['cosa'] = numpy.cos(alpha)
 
         for index, point in points.iterrows():
             outn="param_card_{}.dat".format(point['name'])
-            out=template.format(khtt=point['q'],katt=point['q'],cosa=point['cosa'],kSM=point['kv'])
+            out=template.format(khtt=point['kt']/sina_eq_cosa, katt=point['ktilde']/sina_eq_cosa, cosa=sina_eq_cosa,kSM=point['kv']/sina_eq_cosa)
             outf=open('%s/%s'%(self.tmpdir,outn),'w')
             outf.write(out)
             outf.close()
